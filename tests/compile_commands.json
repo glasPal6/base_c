@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-I../macros",
+      "-c",
+      "-o",
+      "build/dynamic_arrays.o",
+      "src/dynamic_arrays.c"
+    ],
+    "directory": "/home/dylan/Documents/Libraries/common_c/tests",
+    "file": "/home/dylan/Documents/Libraries/common_c/tests/src/dynamic_arrays.c",
+    "output": "/home/dylan/Documents/Libraries/common_c/tests/build/dynamic_arrays.o"
+  }
+]

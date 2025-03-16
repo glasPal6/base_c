@@ -1,4 +1,3 @@
-// TODO: CHECK THESE
 
 /*
  *
@@ -13,6 +12,8 @@
  *
  * 'void' can be any type
  */
+
+#include <stdlib.h>
 
 #define DA_INIT_CAP 256
 
@@ -72,9 +73,9 @@
     ({                                                                         \
         if ((new_size) > (da)->capacity) {                                     \
             (da)->capacity = (new_size);                                       \
-            (da)->items = NOB_REALLOC((da)->items,                             \
-                                      (da)->capacity * sizeof(*(da)->items));  \
-            NOB_ASSERT((da)->items != NULL && "Buy more RAM lol");             \
+            (da)->items =                                                      \
+                realloc((da)->items, (da)->capacity * sizeof(*(da)->items));   \
+            assert((da)->items != NULL && "Realloc failed");                   \
         }                                                                      \
         (da)->count = (new_size);                                              \
     })
