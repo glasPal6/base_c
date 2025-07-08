@@ -1,0 +1,64 @@
+name: Run Tests
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc make
+
+    - name: Build tests
+      working-directory: tests
+      run: make all
+
+    - name: Run tests
+      working-directory: tests
+      run: |
+        mkdir -p test-results
+        echo "# Test Results" > test-results/summary.md
+        echo "" >> test-results/summary.md
+        echo "| Test | Status | Output |" >> test-results/summary.md
+        echo "|------|--------|--------|" >> test-results/summary.md
+        
+        FAILED=0
+        for test in build/*; do
+          if [ -x "$test" ]; then
+            TEST_NAME=$(basename "$test")
+            echo "::group::Running $TEST_NAME"
+            OUTPUT_FILE="test-results/$TEST_NAME.log"
+            
+            if "$test" > "$OUTPUT_FILE" 2>&1; then
+              echo "✅ Test $TEST_NAME passed"
+              echo "| $TEST_NAME | ✅ PASS | [Log](./test-results/$TEST_NAME.log) |" >> test-results/summary.md
+            else
+              echo "❌ Test $TEST_NAME failed with exit code $?"
+              echo "| $TEST_NAME | ❌ FAIL | [Log](./test-results/$TEST_NAME.log) |" >> test-results/summary.md
+              FAILED=1
+              cat "$OUTPUT_FILE"
+            fi
+            echo "::endgroup::"
+          fi
+        done
+        
+        cat test-results/summary.md
+        exit $FAILED
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: tests/test-results/
