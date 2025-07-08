@@ -1,6 +1,6 @@
 CC := gcc
 CFLAGS := -Wall -Wextra 
-CFLAGS := $(CFLAGS) -I../macros
+CFLAGS := $(CFLAGS) -I../base_c
 
 LDFLAGS := 
 SRC_DIR := src

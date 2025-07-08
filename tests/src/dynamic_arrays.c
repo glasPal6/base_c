@@ -1,7 +1,8 @@
-#include "dynamic_array.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "dynamic_array.h"
 
 // Test structure
 typedef struct {
@@ -59,7 +60,7 @@ void test_remove() {
 
     da_remove(&arr, 2);
     verify_array_state(&arr, 4, 5);
-    assert(arr.items[2] == 3); // Verify shift occurred
+    assert(arr.items[2] == 3);  // Verify shift occurred
 
     da_free(&arr);
 }
@@ -73,7 +74,7 @@ void test_remove_many() {
 
     da_remove_many(&arr, 2, 3);
     verify_array_state(&arr, 7, 10);
-    assert(arr.items[2] == 5); // Verify shift occurred
+    assert(arr.items[2] == 5);  // Verify shift occurred
 
     da_free(&arr);
 }
@@ -87,7 +88,7 @@ void test_foreach() {
 
     int sum = 0;
     da_foreach(int, item, &arr) { sum += *item; }
-    assert(sum == 10); // 0 + 1 + 2 + 3 + 4
+    assert(sum == 10);  // 0 + 1 + 2 + 3 + 4
 
     da_free(&arr);
 }
@@ -100,7 +101,7 @@ void test_resize() {
     verify_array_state(&arr, 1000, 1000);
 
     da_resize(&arr, 500);
-    verify_array_state(&arr, 500, 1000); // Capacity shouldn't decrease
+    verify_array_state(&arr, 500, 1000);  // Capacity shouldn't decrease
 
     da_free(&arr);
 }
@@ -116,7 +117,7 @@ void test_find() {
     assert(index == 3);
 
     index = da_find(&arr, 999);
-    assert(index == (size_t)-1); // Not found
+    assert(index == (size_t)-1);  // Not found
 
     da_free(&arr);
 }
@@ -129,7 +130,7 @@ void test_get() {
     }
 
     assert(da_get(&arr, 2) == 2);
-    assert(da_get(&arr, 999) == 0); // Out of bounds
+    assert(da_get(&arr, 999) == 0);  // Out of bounds
 
     da_free(&arr);
 }
