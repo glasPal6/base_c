@@ -1,9 +1,8 @@
+#include "defer.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-
-#define DEFER_MACRO
-#include "defer.h"
 
 // Global variables to track execution flow
 int execution_counter = 0;
@@ -16,13 +15,12 @@ void test_basic_defer() {
 
     execution_counter = 0;
     {
-        defer { record_execution(1); }
+        defer({ record_execution(1); });
         record_execution(0);
     }
 
     assert(defer_executions[0] == 0);
     assert(defer_executions[1] == 1);
-    printf("Basic defer test passed!\n");
 }
 
 void test_multiple_defers() {
@@ -30,9 +28,9 @@ void test_multiple_defers() {
 
     execution_counter = 0;
     {
-        defer { record_execution(3); }
-        defer { record_execution(2); }
-        defer { record_execution(1); }
+        defer({ record_execution(3); });
+        defer({ record_execution(2); });
+        defer({ record_execution(1); });
         record_execution(0);
     }
 
@@ -41,7 +39,6 @@ void test_multiple_defers() {
     assert(defer_executions[1] == 1);
     assert(defer_executions[2] == 2);
     assert(defer_executions[3] == 3);
-    printf("Multiple defers test passed!\n");
 }
 
 void test_nested_defers() {
@@ -49,11 +46,11 @@ void test_nested_defers() {
 
     execution_counter = 0;
     {
-        defer {
+        defer({
             record_execution(2);
-            defer { record_execution(3); }
-        }
-        defer { record_execution(1); }
+            defer({ record_execution(3); });
+        });
+        defer({ record_execution(1); });
         record_execution(0);
     }
 
@@ -61,7 +58,6 @@ void test_nested_defers() {
     assert(defer_executions[1] == 1);
     assert(defer_executions[2] == 2);
     assert(defer_executions[3] == 3);
-    printf("Nested defers test passed!\n");
 }
 
 int test_with_return() {
@@ -69,7 +65,7 @@ int test_with_return() {
 
     execution_counter = 0;
     {
-        defer { record_execution(1); }
+        defer({ record_execution(1); });
         record_execution(0);
         return 42;  // defer should still execute
     }
@@ -82,11 +78,11 @@ void test_with_variables() {
     {
         int x = 4;
         char* msg = "H";
-        defer {
+        defer({
             assert(x == 42);
             assert(strcmp(msg, "Hello") == 0);
             record_execution(1);
-        }
+        });
         x = 42;
         msg = "Hello";
         record_execution(0);
@@ -94,7 +90,6 @@ void test_with_variables() {
 
     assert(defer_executions[0] == 0);
     assert(defer_executions[1] == 1);
-    printf("Variables in defer test passed!\n");
 }
 
 void test_resource_cleanup() {
@@ -105,11 +100,11 @@ void test_resource_cleanup() {
     {
         file = tmpfile();
         assert(file != NULL);
-        defer {
+        defer({
             fclose(file);
             file = NULL;
             record_execution(1);
-        }
+        });
 
         // Use the file
         fputs("test", file);
@@ -119,7 +114,6 @@ void test_resource_cleanup() {
     assert(file == NULL);  // File should be closed by defer
     assert(defer_executions[0] == 0);
     assert(defer_executions[1] == 1);
-    printf("Resource cleanup test passed!\n");
 }
 
 int main() {
@@ -132,7 +126,6 @@ int main() {
     assert(ret == 42);
     assert(defer_executions[0] == 0);
     assert(defer_executions[1] == 1);
-    printf("Return with defer test passed!\n");
 
     test_with_variables();
     test_resource_cleanup();
