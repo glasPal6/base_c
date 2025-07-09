@@ -4,14 +4,33 @@
       "/usr/bin/gcc",
       "-Wall",
       "-Wextra",
+      "-std=c2x",
       "-I../base_c",
+      "-DCOMPILER_GCC",
+      "-c",
+      "-o",
+      "build/defer.o",
+      "src/defer.c"
+    ],
+    "directory": "/home/dylan/Documents/Libraries/base_c/defer/tests",
+    "file": "/home/dylan/Documents/Libraries/base_c/defer/tests/src/defer.c",
+    "output": "/home/dylan/Documents/Libraries/base_c/defer/tests/build/defer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c2x",
+      "-I../base_c",
+      "-DCOMPILER_GCC",
       "-c",
       "-o",
       "build/dynamic_arrays.o",
       "src/dynamic_arrays.c"
     ],
-    "directory": "/home/dylan/Documents/Libraries/base_c/main/tests",
-    "file": "/home/dylan/Documents/Libraries/base_c/main/tests/src/dynamic_arrays.c",
-    "output": "/home/dylan/Documents/Libraries/base_c/main/tests/build/dynamic_arrays.o"
+    "directory": "/home/dylan/Documents/Libraries/base_c/defer/tests",
+    "file": "/home/dylan/Documents/Libraries/base_c/defer/tests/src/dynamic_arrays.c",
+    "output": "/home/dylan/Documents/Libraries/base_c/defer/tests/build/dynamic_arrays.o"
   }
 ]

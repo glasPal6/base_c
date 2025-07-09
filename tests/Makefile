@@ -1,6 +1,15 @@
 CC := gcc
-CFLAGS := -Wall -Wextra 
+CFLAGS := -Wall -Wextra -std=c2x  # C23 standard (c2x is the flag for C23)
 CFLAGS := $(CFLAGS) -I../base_c
+
+# Add compiler-specific flags
+ifeq ($(shell $(CC) -v 2>&1 | grep -c "clang version"), 1)
+    # Using Clang
+    CFLAGS += -fblocks -DCOMPILER_CLANG
+else
+    # Assuming GCC
+    CFLAGS += -DCOMPILER_GCC
+endif
 
 LDFLAGS := 
 SRC_DIR := src
