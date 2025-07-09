@@ -13,6 +13,8 @@
  * 'void' can be any type
  */
 
+#ifndef DYNAMICARRAY_H
+#define DYNAMICARRAY_H
 #include <stdlib.h>
 
 #define DA_INIT_CAP 256
@@ -100,3 +102,5 @@
         (da)->count = 0;    \
         (da)->capacity = 0; \
     })
+
+#endif  // DYNAMICARRAY_H
